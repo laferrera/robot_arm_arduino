@@ -41,6 +41,8 @@ static uint8_t inputData[1];
 class ServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
       Serial.println("BLE Client Connected");
+      M5.Lcd.fillScreen(BLACK);
+      M5.Lcd.setCursor(0, 0);
       M5.Lcd.println("BLE Client Connected");
     }
     void onDisconnect(BLEServer* pServer) {
@@ -54,11 +56,6 @@ class InputReceivedCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharWriteState) {
       uint8_t *inputValues = pCharWriteState->getData();
 
-//      M5.Lcd.println("Input Values");
-//      M5.Lcd.println(String(*inputValues));
-//        M5.Lcd.fillScreen(BLACK);
-//        M5.Lcd.setCursor(0, 0);
-
       switch (*inputValues) {
         case 0x00: // button UP
           Serial.printf("Moving UP");
@@ -70,28 +67,28 @@ class InputReceivedCallbacks: public BLECharacteristicCallbacks {
         case 0x01: // button DOWN
           Serial.printf("Moving DOWN");
           M5.Lcd.fillScreen(BLACK);
-          M5.Lcd.setCursor(0, 0);          
+          M5.Lcd.setCursor(0, 0);
           M5.Lcd.println("Moving DOWN");
           myCobotpro.writeAngle(2, angleB--, moveSpeed);
           break;
         case 0x02: // button LEFT
           Serial.printf("Moving LEFT");
           M5.Lcd.fillScreen(BLACK);
-          M5.Lcd.setCursor(0, 0);          
+          M5.Lcd.setCursor(0, 0);
           M5.Lcd.println("Moving LEFT");
           myCobotpro.writeAngle(1, angleA++, moveSpeed);
           break;
         case 0x03: // button RIGHT
           Serial.printf("Moving RIGHT");
           M5.Lcd.fillScreen(BLACK);
-          M5.Lcd.setCursor(0, 0);          
+          M5.Lcd.setCursor(0, 0);
           M5.Lcd.println("Moving RIGHT");
           myCobotpro.writeAngle(1, angleA--, moveSpeed);
           break;
         case 0x04: // button vertical UP
           Serial.printf("Moving OUT");
           M5.Lcd.fillScreen(BLACK);
-          M5.Lcd.setCursor(0, 0);          
+          M5.Lcd.setCursor(0, 0);
           M5.Lcd.println("Moving OUT");
           myCobotpro.writeAngle(3, angleC++, moveSpeed);
           myCobotpro.writeAngle(4, angleD++, moveSpeed);
@@ -99,12 +96,43 @@ class InputReceivedCallbacks: public BLECharacteristicCallbacks {
         case 0x05: // button vertical DOWN
           Serial.printf("Moving IN");
           M5.Lcd.fillScreen(BLACK);
-          M5.Lcd.setCursor(0, 0);          
+          M5.Lcd.setCursor(0, 0);
           M5.Lcd.println("Moving IN");
           myCobotpro.writeAngle(3, angleC--, moveSpeed);
           myCobotpro.writeAngle(4, angleD--, moveSpeed);
           break;
-
+       case 0x06: // button expand
+          Serial.printf("Moving Expand");
+          M5.Lcd.fillScreen(BLACK);
+          M5.Lcd.setCursor(0, 0);
+          M5.Lcd.println("Moving Expand");
+//          myCobotpro.writeAngle(3, angleC--, moveSpeed);
+//          myCobotpro.writeAngle(4, angleD--, moveSpeed);
+          break;
+       case 0x07: // button collapse
+          Serial.printf("Moving Collapse");
+          M5.Lcd.fillScreen(BLACK);
+          M5.Lcd.setCursor(0, 0);
+          M5.Lcd.println("Moving Collapse");
+//          myCobotpro.writeAngle(3, angleC--, moveSpeed);
+//          myCobotpro.writeAngle(4, angleD--, moveSpeed);
+          break;
+       case 0x18: // 4g mode
+          Serial.printf("Starting 4g Mode");
+          M5.Lcd.fillScreen(BLACK);
+          M5.Lcd.setCursor(0, 0);
+          M5.Lcd.println("Starting 4g Mode");
+//          myCobotpro.writeAngle(3, angleC--, moveSpeed);
+//          myCobotpro.writeAngle(4, angleD--, moveSpeed);
+          break;
+       case 0x08: // 5g mode
+          Serial.printf("Starting 5g Mode");
+          M5.Lcd.fillScreen(BLACK);
+          M5.Lcd.setCursor(0, 0);
+          M5.Lcd.println("Starting 5g Mode");
+//          myCobotpro.writeAngle(3, angleC--, moveSpeed);
+//          myCobotpro.writeAngle(4, angleD--, moveSpeed);
+          break;          
       }
 
 
@@ -131,9 +159,9 @@ void setup() {
                                     BLECharacteristic::PROPERTY_WRITE_NR | BLECharacteristic::PROPERTY_WRITE);
 
 
-//  BLECharacteristic *pOutputChar = pService->createCharacteristic(
-//                            CHARACTERISTIC_OUTPUT_UUID,
-//                          BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+  //  BLECharacteristic *pOutputChar = pService->createCharacteristic(
+  //                            CHARACTERISTIC_OUTPUT_UUID,
+  //                          BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
 
 
 
